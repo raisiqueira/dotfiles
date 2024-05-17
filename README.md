@@ -7,13 +7,19 @@ My dotfiles.
 - Homebrew: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 - GNU Stow `brew install stow`
 
-## Install the Homebrew packages
+## Setup
+
+Setup by using the `setup-mac.sh` script or the `setup.sh` (Ubuntu) script.
+
+## Manual Setup
+
+### Install the Homebrew packages
 
 ```bash
 brew bundle install
 ```
 
-## Setup the dotfiles
+### Setup the dotfiles
 
 Inside the `dotfiles` folder, run the following command:
 
@@ -24,5 +30,5 @@ stow --adopt .
 ## Updating the `Brewfile`
 
 ```bash
-brew bundle dump
+brew bundle dump --force
 ```

@@ -1,5 +1,6 @@
 tap "homebrew/bundle"
 tap "homebrew/cask-fonts"
+brew nvm
 brew "act"
 brew "docker"
 brew "exa"
