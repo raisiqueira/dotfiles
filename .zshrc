@@ -47,6 +47,12 @@ fi
 # Source/load zinit
 source "${ZINIT_HOME}/zinit.zsh"
 
+# Tmux TPM
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+    echo "Directory ~/.tmux/plugins/tpm does not exist. Cloning repository..."
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
+
 # Powerlevel10k theme
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
@@ -105,3 +111,5 @@ alias top="btop"
 # Shell Integration
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+
+PATH=~/.console-ninja/.bin:$PATH
