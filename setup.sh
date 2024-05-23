@@ -22,7 +22,9 @@ sudo apt install -y \
     zip \
     stow \
     zsh \
-    tmux
+    tmux \
+    fzf \
+    zoxide
 
 echo "Set zsh as the default shell"
 chs -s $(which zsh)
