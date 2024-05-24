@@ -227,9 +227,6 @@ lspconfig.emmet_ls.setup({
 local null_ls = require("null-ls")
 local custom_formatters = helpers.get_config_item { "formatters" }
 local default_formatters = {
-  eslint_d = {
-    extra_args = { "--stdin", "--fix-to-stdout" },
-  },
   prettier = {
     filetypes = {
       "javascript",
@@ -272,6 +269,12 @@ local formatting_sources = {}
 for k, v in pairs(all_formatters) do
   table.insert(formatting_sources, null_ls.builtins.formatting[k].with(v))
 end
+
+table.insert(formatting_sources, require("none-ls.diagnostics.eslint_d"))
+table.insert(formatting_sources, require("none-ls.formatting.eslint_d"))
+table.insert(formatting_sources, require("none-ls.code_actions.eslint_d"))
+table.insert(formatting_sources, require("none-ls-shellcheck.diagnostics"))
+table.insert(formatting_sources, require("none-ls-shellcheck.code_actions"))
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 null_ls.setup({

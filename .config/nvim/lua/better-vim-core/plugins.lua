@@ -69,7 +69,6 @@ local default_plugins = {
   "mattn/emmet-vim",
   {
     "akinsho/bufferline.nvim",
-    version = "v4.*",
   },
   {
     "numToStr/Comment.nvim",
@@ -141,11 +140,18 @@ local default_plugins = {
     },
   },
   {
+    "nvimtools/none-ls.nvim",
+    dependencies = {
+      "nvimtools/none-ls-extras.nvim",
+      "gbprod/none-ls-shellcheck.nvim",
+    },
+  },
+  {
     "jay-babu/mason-null-ls.nvim",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "williamboman/mason.nvim",
-      "jose-elias-alvarez/null-ls.nvim",
+      "nvimtools/none-ls.nvim",
     },
   },
   helpers.should_load_by_flag("experimental_tsserver", {
