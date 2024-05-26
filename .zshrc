@@ -109,6 +109,8 @@ alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
 alias vim="nvim"
 alias vi="nvim"
 alias top="btop"
+alias cat="bat"
+alias l="eza -l --icons --git -a"
 
 # Shell Integration
 eval "$(fzf --zsh)"
