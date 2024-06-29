@@ -112,6 +112,8 @@ alias top="btop"
 alias cat="bat"
 alias l="eza -l --icons --git -a"
 alias ls="eza --icons --group-directories-first --git"
+alias lg="lazygit"
+
 # Shell Integration
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
