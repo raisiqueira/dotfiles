@@ -11,7 +11,7 @@
   "theme": "Catppuccin Mocha",
   "tab_size": 2,
   "preferred_line_length": 100,
-  "formatter": "prettier",
+  // "formatter": "prettier",
   "project_panel": {
     "dock": "right"
   },
