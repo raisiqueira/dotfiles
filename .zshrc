@@ -118,3 +118,4 @@ alias lg="lazygit"
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
+
