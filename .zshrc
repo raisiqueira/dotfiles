@@ -1,3 +1,5 @@
+# Add deno completions to search path
+if [[ ":$FPATH:" != *":/Users/rai/.zsh/completions:"* ]]; then export FPATH="/Users/rai/.zsh/completions:$FPATH"; fi
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -120,3 +122,5 @@ eval "$(zoxide init --cmd cd zsh)"
 
 
 
+. "/Users/rai/.deno/env"
+. "$HOME/.local/bin/env"
