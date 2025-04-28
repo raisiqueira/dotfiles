@@ -124,3 +124,6 @@ eval "$(zoxide init --cmd cd zsh)"
 
 . "/Users/rai/.deno/env"
 . "$HOME/.local/bin/env"
+
+# Added by Windsurf
+export PATH="/Users/rai/.codeium/windsurf/bin:$PATH"
