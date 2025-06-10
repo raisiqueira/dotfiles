@@ -30,5 +30,5 @@ stow --adopt .
 ## Updating the `Brewfile`
 
 ```bash
-brew bundle dump --force
+brew bundle dump --force --no-vscode
 ```
