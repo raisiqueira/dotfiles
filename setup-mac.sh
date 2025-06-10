@@ -12,7 +12,7 @@ echo "Install Brew packages"
 brew bundle install
 
 # Symlink the dotfiles to the home directory using gnu-stow
-stow .
+stow . --adopt
 
 # Update the zshrc file
 source ~/.zshrc

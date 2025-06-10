@@ -120,10 +120,8 @@ alias lg="lazygit"
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
+# homebrew configs
+export HOMEBREW_BREWFILE_VSCODE=0
 
-
-. "/Users/rai/.deno/env"
-. "$HOME/.local/bin/env"
-
-# Added by Windsurf
-export PATH="/Users/rai/.codeium/windsurf/bin:$PATH"
+# . "/Users/rai/.deno/env"
+# . "$HOME/.local/bin/env"
