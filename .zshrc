@@ -105,6 +105,13 @@ zstyle 'completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
+# Functions
+
+upgrade_ai_packages() {
+  npm install -g opencode-ai
+  npm install -g @anthropic-ai/claude-code@latest
+}
+
 # Aliases
 alias ls='ls --color'
 alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
@@ -115,6 +122,7 @@ alias cat="bat"
 alias l="eza -l --icons --git -a"
 alias ls="eza --icons --group-directories-first --git"
 alias lg="lazygit"
+alias upgrade_ai_packages='upgrade_ai_packages'
 
 # Shell Integration
 eval "$(fzf --zsh)"
