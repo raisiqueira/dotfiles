@@ -110,6 +110,7 @@ zstyle ':fzf-tab:complete__zoxide_z:*' fzf-preview 'ls --color $realpath'
 upgrade_ai_packages() {
   npm install -g opencode-ai
   npm install -g @anthropic-ai/claude-code@latest
+  npm install -g @google/gemini-cli
 }
 
 # Aliases
