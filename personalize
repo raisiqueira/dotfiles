@@ -1,0 +1,136 @@
+#!/bin/bash
+
+set -e  # Exit on any error
+
+echo "👤 Setting up personal development environment..."
+
+# Ensure Homebrew is in PATH
+if [ -f /etc/profile.d/homebrew.sh ]; then
+    source /etc/profile.d/homebrew.sh
+fi
+
+# Git configuration
+# echo "🔧 Configuring Git"
+# if [ -z "$(git config --global user.name)" ]; then
+#     echo "Enter your Git username: "
+#     read git_config_username
+#     git config --global user.name "$git_config_username"
+# else
+#     echo "✅ Git username already configured: $(git config --global user.name)"
+# fi
+
+# if [ -z "$(git config --global user.email)" ]; then
+#     echo "Enter your Git email: "
+#     read git_config_email
+#     git config --global user.email "$git_config_email"
+# else
+#     echo "✅ Git email already configured: $(git config --global user.email)"
+# fi
+
+# Additional useful git configurations
+git config --global init.defaultBranch main
+git config --global pull.rebase false
+git config --global core.editor "nvim"
+
+echo "🐚 Setting up shell environment"
+
+# Set zsh as default shell
+if [ "$SHELL" != "$(which zsh)" ]; then
+    echo "Setting zsh as default shell..."
+    # Try chsh with sudo first
+    if sudo chsh -s "$(which zsh)" "$USER" 2>/dev/null; then
+        echo "✅ Successfully changed default shell to zsh"
+    else
+        echo "⚠️  Could not change default shell using chsh. Adding fallback..."
+        
+        # Add auto-start zsh to .bashrc as fallback
+        if ! grep -q "exec zsh" ~/.bashrc 2>/dev/null; then
+            echo "" >> ~/.bashrc
+            echo "# Auto-start zsh if available and not already running" >> ~/.bashrc
+            echo "if [ -x \"\$(command -v zsh)\" ] && [ \"\$BASH_EXECUTION_STRING\" = \"\" ] && [ \"\$0\" = \"-bash\" ]; then" >> ~/.bashrc
+            echo "    exec zsh" >> ~/.bashrc
+            echo "fi" >> ~/.bashrc
+            echo "✅ Added zsh auto-start to .bashrc"
+        fi
+    fi
+else
+    echo "✅ zsh is already the default shell"
+fi
+
+echo "📁 Setting up dotfiles"
+
+# Check if we're in a dotfiles directory or if dotfiles need to be cloned
+DOTFILES_DIR="$HOME/dotfiles"
+CURRENT_DIR=$(pwd)
+
+# If we're not in a dotfiles directory, try to find or clone it
+if [ ! -f "$CURRENT_DIR/.git/config" ] || ! grep -q "dotfiles" "$CURRENT_DIR/.git/config" 2>/dev/null; then
+    if [ -d "$DOTFILES_DIR" ]; then
+        echo "📂 Found dotfiles directory at $DOTFILES_DIR"
+        cd "$DOTFILES_DIR"
+    else
+        echo "🤔 Dotfiles directory not found."
+        echo "Please clone your dotfiles repository first, then run this script from within it."
+        echo "Example: git clone https://github.com/yourusername/dotfiles.git $DOTFILES_DIR"
+        echo "Then: cd $DOTFILES_DIR && ./personalize"
+        exit 1
+    fi
+fi
+
+# Handle existing dotfiles conflicts
+echo "🔍 Checking for existing dotfile conflicts..."
+
+# Create backup directory if needed
+BACKUP_DIR="$HOME/.dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
+
+# List of common files that might conflict
+COMMON_CONFLICTS=(.profile .bashrc .bash_profile .bash_logout .vimrc .gitconfig .zshrc)
+
+# Check for conflicts and backup if needed
+conflicts_found=false
+for file in "${COMMON_CONFLICTS[@]}"; do
+    if [ -f "$HOME/$file" ] && [ ! -L "$HOME/$file" ]; then
+        if [ "$conflicts_found" = false ]; then
+            echo "📋 Found existing configuration files. Creating backup in $BACKUP_DIR"
+            mkdir -p "$BACKUP_DIR"
+            conflicts_found=true
+        fi
+        echo "💾 Backing up existing $file"
+        cp "$HOME/$file" "$BACKUP_DIR/"
+        rm "$HOME/$file"
+    fi
+done
+
+# Stow dotfiles
+echo "🔗 Setting up dotfiles with GNU Stow..."
+if stow . 2>/dev/null; then
+    echo "✅ Dotfiles stowed successfully"
+elif stow --adopt . 2>/dev/null; then
+    echo "✅ Dotfiles adopted and stowed successfully"
+    echo "📝 Note: Some existing configs were adopted into your dotfiles repo"
+else
+    echo "⚠️  Warning: Could not stow dotfiles automatically."
+    echo "🛠️  Try running manually: stow --adopt . or stow --override ."
+fi
+
+if [ "$conflicts_found" = true ]; then
+    echo "📦 Backup of original files created in: $BACKUP_DIR"
+fi
+
+# Source shell configuration
+echo "🔄 Loading shell configuration..."
+if [ -f ~/.zshrc ]; then
+    echo "📜 Sourcing .zshrc..."
+    zsh -c "source ~/.zshrc" 2>/dev/null || echo "📝 Note: Some zsh configurations may require a new shell session"
+fi
+
+echo ""
+echo "🎉 Personalization complete!"
+echo "==============================================="
+echo ""
+echo "🎯 Next steps:"
+echo "  • Start a new terminal session or run: exec zsh"
+echo "  • Your original configs are backed up if conflicts were found"
+echo "  • All your personal tools and settings are now ready!"
+echo ""
+echo "✨ Happy coding! ✨"
