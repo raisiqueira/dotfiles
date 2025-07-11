@@ -38,13 +38,13 @@ sudo apt install -y \
 
 echo "Installing brew packages"
 
-brew "bat"
-brew "eza"
-brew "fd"
-brew "lazygit"
-brew "tree-sitter"
-brew "neovim"
-brew "ripgrep"
+brew install bat
+brew install eza
+brew install fd
+brew install lazygit
+brew install tree-sitter
+brew install neovim
+brew install ripgrep
 
 echo "Set zsh as the default shell"
 chs -s $(which zsh)
