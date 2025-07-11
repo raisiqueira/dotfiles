@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "Welcome! Let's start setting up the system. It could take more than 10 minutes, be patient"
 
 echo "Let's start with the Git setup. Set the git username: "
@@ -53,4 +55,3 @@ echo "Bumping the max file watchers"
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 
 echo "All setup, enjoy!"
-
