@@ -75,12 +75,54 @@ fi
 
 echo "Setup gnu-stow"
 
-# Check if dotfiles are already stowed
-if [ ! -f ~/.zshrc ] || [ ! -L ~/.zshrc ]; then
-  stow --adopt .
-  echo "Dotfiles stowed successfully"
+# Handle existing dotfiles conflicts
+echo "Checking for existing dotfile conflicts..."
+
+# Create backup directory
+BACKUP_DIR="$HOME/.dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
+
+# List of common files that might conflict
+COMMON_CONFLICTS=(.profile .bashrc .bash_profile .bash_logout .vimrc .gitconfig)
+
+# Check for conflicts and backup if needed
+conflicts_found=false
+for file in "${COMMON_CONFLICTS[@]}"; do
+  if [ -f "$HOME/$file" ] && [ ! -L "$HOME/$file" ]; then
+    if [ "$conflicts_found" = false ]; then
+      echo "Found existing configuration files. Creating backup in $BACKUP_DIR"
+      mkdir -p "$BACKUP_DIR"
+      conflicts_found=true
+    fi
+    echo "Backing up existing $file"
+    cp "$HOME/$file" "$BACKUP_DIR/"
+    rm "$HOME/$file"
+  fi
+done
+
+# Try to stow dotfiles
+if [ -d ".git" ]; then
+  # We're in a git repository (dotfiles directory)
+  echo "Stowing dotfiles..."
+  if stow . 2>/dev/null; then
+    echo "Dotfiles stowed successfully"
+  else
+    echo "Stow failed. Trying with --adopt flag..."
+    if stow --adopt . 2>/dev/null; then
+      echo "Dotfiles adopted and stowed successfully"
+      echo "Note: Some existing configs were adopted into your dotfiles repo"
+    else
+      echo "Warning: Could not stow dotfiles automatically."
+      echo "You may need to resolve conflicts manually."
+      echo "Try running: stow --adopt . or stow --override ."
+    fi
+  fi
 else
-  echo "Dotfiles appear to already be stowed"
+  echo "Warning: Not in a dotfiles directory. Skipping stow setup."
+  echo "Make sure to run this script from your dotfiles repository root."
+fi
+
+if [ "$conflicts_found" = true ]; then
+  echo "Backup of original files created in: $BACKUP_DIR"
 fi
 
 echo "Bumping the max file watchers"
