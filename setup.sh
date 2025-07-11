@@ -4,15 +4,6 @@ set -e # Exit on any error
 
 echo "Welcome! Let's start setting up the system. It could take more than 10 minutes, be patient"
 
-# Git setup
-echo "Let's start with the Git setup. Set the git username: "
-read git_config_username
-git config --global user.name "$git_config_username"
-
-echo "Set the git email: "
-read git_config_email
-git config --global user.email "$git_config_email"
-
 echo "Update the system"
 cd ~ && sudo apt update && sudo apt upgrade -y
 
