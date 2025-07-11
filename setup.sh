@@ -47,7 +47,7 @@ brew install neovim
 brew install ripgrep
 
 echo "Set zsh as the default shell"
-chs -s $(which zsh)
+chsh -s $(which zsh)
 
 echo "Setup gnu-stow"
 
